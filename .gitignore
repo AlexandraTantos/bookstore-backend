@@ -1,0 +1,13 @@
+**/appsettings.json
+**/appsettings.Development.json
+
+.idea/
+.vs/
+
+bin/
+obj/
+
+*.log
+*.user
+*.suo
+*.cache
