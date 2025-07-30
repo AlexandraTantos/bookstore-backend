@@ -23,7 +23,7 @@ namespace BookStore.Repositories
     {
       var filter = Builders<Book>.Filter.Empty;
       List<Book> booksFromDb = await this.booksCollection.Find(filter)
-      .ToListAsync(cancellationToken);
+      .Limit(10).ToListAsync(cancellationToken);
       return booksFromDb;
     }
 

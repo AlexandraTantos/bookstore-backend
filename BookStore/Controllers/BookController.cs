@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.CreateBook;
+using BookStore.Application.GetAllBooks;
 using BookStore.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,5 +22,17 @@ namespace BookStore.Controllers
       }
       return BadRequest(response);
     }
+
+    [HttpGet("GetAllBooks")]
+    public async Task<IActionResult> GetAllBooks(CancellationToken cancellationToken)
+    {
+      var response = await this.mediator.Send(new GetAllBooksRequest(), cancellationToken);
+      if (response.StatusCode == System.Net.HttpStatusCode.OK)
+      {
+        return Ok(response);
+      }
+      return BadRequest(response);
+    }
+
   }
 }
