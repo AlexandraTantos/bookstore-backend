@@ -39,10 +39,10 @@ namespace BookStore.Controllers
       return BadRequest(response);
     }
 
-    [HttpGet("GetBookById")]
-    public async Task<IActionResult> GetBookById([FromQuery] GetBookByIdRequest request,
-      CancellationToken cancellationToken)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetBookById(string id, CancellationToken cancellationToken)
     {
+      var request = new GetBookByIdRequest { Id = id };
       var response = await this.mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
