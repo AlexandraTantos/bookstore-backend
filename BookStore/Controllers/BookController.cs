@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.CreateBook;
 using BookStore.Application.GetAllBooks;
+using BookStore.Application.GetBookById;
 using BookStore.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,16 @@ namespace BookStore.Controllers
     private IMediator mediator = mediator;
 
     [HttpPost("InsertBook")]
-    public async Task<IActionResult> InsertBook([FromBody] CreateBookRequest request,CancellationToken cancellationToken)
+    public async Task<IActionResult> InsertBook([FromBody] CreateBookRequest request,
+      CancellationToken cancellationToken)
     {
       var response = await this.mediator.Send(request, cancellationToken);
-      if(response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.Created)
+      if (response.StatusCode == System.Net.HttpStatusCode.OK ||
+          response.StatusCode == System.Net.HttpStatusCode.Created)
       {
         return Ok(response);
       }
+
       return BadRequest(response);
     }
 
@@ -31,8 +35,20 @@ namespace BookStore.Controllers
       {
         return Ok(response);
       }
+
       return BadRequest(response);
     }
 
+    [HttpGet("GetBookById")]
+    public async Task<IActionResult> GetBookById([FromQuery] GetBookByIdRequest request,
+      CancellationToken cancellationToken)
+    {
+      var response = await this.mediator.Send(request, cancellationToken);
+      if (response.StatusCode == System.Net.HttpStatusCode.OK)
+      {
+        return Ok(response);
+      }
+      return BadRequest(response);
+    }
   }
 }
