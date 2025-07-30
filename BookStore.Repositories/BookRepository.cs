@@ -43,13 +43,12 @@ namespace BookStore.Repositories
 
     public async Task<bool> UpdateAsync(Book item, CancellationToken cancellationToken)
     {
-      //patch -> 
-      //put -> 
       var filter = Builders<Book>.Filter.Eq(x => x.Id, item.Id);
       var update = Builders<Book>.Update.Set(x => x.AuthorId, item.AuthorId)
                                         .Set(x => x.Genres, item.Genres)
                                         .Set(x => x.YearOfPublication, item.YearOfPublication)
-                                        .Set(x => x.Title, item.Title);
+                                        .Set(x => x.Title, item.Title)
+                                        .Set(x => x.PublisherId, item.PublisherId);
 
       //if we want to specify which properties to update
       var response = await this.booksCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);

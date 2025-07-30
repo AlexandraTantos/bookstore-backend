@@ -1,6 +1,8 @@
 ﻿using BookStore.Application.CreateBook;
+using BookStore.Application.DeleteBook;
 using BookStore.Application.GetAllBooks;
 using BookStore.Application.GetBookById;
+using BookStore.Application.UpdateBook;
 using BookStore.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,6 @@ namespace BookStore.Controllers
       {
         return Ok(response);
       }
-
       return BadRequest(response);
     }
 
@@ -35,7 +36,6 @@ namespace BookStore.Controllers
       {
         return Ok(response);
       }
-
       return BadRequest(response);
     }
 
@@ -43,6 +43,31 @@ namespace BookStore.Controllers
     public async Task<IActionResult> GetBookById(string id, CancellationToken cancellationToken)
     {
       var request = new GetBookByIdRequest { Id = id };
+      var response = await this.mediator.Send(request, cancellationToken);
+      if (response.StatusCode == System.Net.HttpStatusCode.OK)
+      {
+        return Ok(response);
+      }
+      return BadRequest(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBook(string id, CancellationToken cancellationToken)
+    {
+      var request = new DeleteBookRequest{Id = id};
+      var response = await this.mediator.Send(request, cancellationToken);
+      if (response.StatusCode == System.Net.HttpStatusCode.OK)
+      {
+        return Ok(response);
+      }
+      return BadRequest(response);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateBook(string id, [FromBody] UpdateBookRequest request,
+      CancellationToken cancellationToken)
+    {
+      request.Id = id;
       var response = await this.mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
