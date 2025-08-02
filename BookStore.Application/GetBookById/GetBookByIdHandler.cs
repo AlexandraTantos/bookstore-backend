@@ -8,8 +8,8 @@ namespace BookStore.Application.GetBookById;
 
 public class GetBookByIdHandler : IRequestHandler<GetBookByIdRequest, GetBookByIdResponse>
 {
-    public IBookRepository bookRepository;
-    public IMapper mapper;
+    private readonly IBookRepository bookRepository;
+    private readonly IMapper mapper;
 
     public GetBookByIdHandler(IBookRepository bookRepository, IMapper mapper)
     {
