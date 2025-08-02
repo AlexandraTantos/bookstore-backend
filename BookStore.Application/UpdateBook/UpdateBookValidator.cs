@@ -7,14 +7,15 @@ public class UpdateBookValidator:AbstractValidator<UpdateBookRequest>
 {
     public UpdateBookValidator()
     {
-        RuleFor(request => request.Id).NotEmpty().WithMessage("Id is required.").Must(id=>id.IsValidObjectId().Equals(true))
-            .WithMessage("Invalid Object Id");
-        
-        RuleFor(request => request.AuthorId).NotEmpty().WithMessage("Id is required.").Must(id=>id.IsValidObjectId().Equals(true))
-            .WithMessage("Invalid Object Id");
-        
-        RuleFor(request => request.PublisherId).NotEmpty().WithMessage("Id is required.").Must(id=>id.IsValidObjectId().Equals(true))
-            .WithMessage("Invalid Object Id");
+        RuleFor(request => request.AuthorId)
+            .Must(id => id.IsValidObjectId())
+            .WithMessage("Invalid Author Id.")
+            .When(request => !string.IsNullOrWhiteSpace(request.AuthorId));
+
+        RuleFor(request => request.PublisherId)
+            .Must(id => id.IsValidObjectId())
+            .WithMessage("Invalid Publisher Id.")
+            .When(request => !string.IsNullOrWhiteSpace(request.PublisherId));
         
         RuleFor(request => request.Title)
             .MaximumLength(25).WithMessage("Title cannot be longer than 25 characters.")
