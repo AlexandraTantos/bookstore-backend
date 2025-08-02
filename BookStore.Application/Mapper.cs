@@ -8,6 +8,7 @@ namespace BookStore.Application
     public Mapper()
     {
       this.CreateMap<BookDto, Book>().ReverseMap();
+      this.CreateMap<PublisherDto, Publisher>().ReverseMap();
       this.CreateMap<UserDto, User>()
         .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
