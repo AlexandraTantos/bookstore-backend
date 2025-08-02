@@ -1,6 +1,8 @@
 using BookStore.Application.CreatePublisher;
+using BookStore.Application.DeletePublisher;
 using BookStore.Application.GetAllPublishers;
 using BookStore.Application.GetPublisherById;
+using BookStore.Application.UpdatePublisher;
 using BookStore.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +48,30 @@ public class PublisherController(IMediator mediator) : ControllerBase
             return Ok(response);
         }
         return BadRequest(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeletePublisher(string id, CancellationToken cancellationToken)
+    {
+        var request = new DeletePublisherRequest { Id = id };
+        var response = await this.mediator.Send(request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdatePublisher(string id, [FromBody] UpdatePublisherRequest request,
+        CancellationToken cancellationToken)
+    {
+        request.Id = id;
+        var response = await this.mediator.Send(request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            return Ok(response);
+        }
+        return BadRequest();
     }
 }
