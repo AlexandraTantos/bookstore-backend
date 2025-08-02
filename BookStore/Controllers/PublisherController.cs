@@ -1,5 +1,7 @@
+using BookStore.Application.CreatePublisher;
 using BookStore.Application.GetAllPublishers;
 using BookStore.Application.GetPublisherById;
+using BookStore.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,5 +34,17 @@ public class PublisherController(IMediator mediator) : ControllerBase
         }
         return BadRequest();
     }
-    
+
+    [HttpPost("InsertPublisher")]
+    public async Task<IActionResult> InsertPublisher([FromBody] CreatePublisherRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await this.mediator.Send(request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.OK ||
+            response.StatusCode == System.Net.HttpStatusCode.Created)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
 }
