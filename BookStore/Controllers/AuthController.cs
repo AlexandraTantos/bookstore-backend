@@ -9,8 +9,6 @@ namespace BookStore.Controllers;
 [Route("[controller]")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator mediator = mediator;
-
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request, CancellationToken cancellationToken)
     {

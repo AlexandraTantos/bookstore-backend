@@ -7,8 +7,8 @@ namespace BookStore.Application.CreateBook
 {
   public class CreateBookHandler : IRequestHandler<CreateBookRequest, CreateBookResponse>
   {
-    private IBookRepository bookRepository;
-    private IMapper mapper;
+    private readonly IBookRepository bookRepository;
+    private readonly IMapper mapper;
     public CreateBookHandler(IBookRepository bookRepository, IMapper mapper)
     {
       this.bookRepository = bookRepository;

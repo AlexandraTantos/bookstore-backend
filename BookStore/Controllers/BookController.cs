@@ -13,13 +13,11 @@ namespace BookStore.Controllers
   [Route("[controller]")]
   public class BookController(IMediator mediator) : ControllerBase
   {
-    private IMediator mediator = mediator;
-
     [HttpPost("InsertBook")]
     public async Task<IActionResult> InsertBook([FromBody] CreateBookRequest request,
       CancellationToken cancellationToken)
     {
-      var response = await this.mediator.Send(request, cancellationToken);
+      var response = await mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK ||
           response.StatusCode == System.Net.HttpStatusCode.Created)
       {
@@ -31,7 +29,7 @@ namespace BookStore.Controllers
     [HttpGet("GetAllBooks")]
     public async Task<IActionResult> GetAllBooks(CancellationToken cancellationToken)
     {
-      var response = await this.mediator.Send(new GetAllBooksRequest(), cancellationToken);
+      var response = await mediator.Send(new GetAllBooksRequest(), cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
         return Ok(response);
@@ -43,7 +41,7 @@ namespace BookStore.Controllers
     public async Task<IActionResult> GetBookById(string id, CancellationToken cancellationToken)
     {
       var request = new GetBookByIdRequest { Id = id };
-      var response = await this.mediator.Send(request, cancellationToken);
+      var response = await mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
         return Ok(response);
@@ -55,7 +53,7 @@ namespace BookStore.Controllers
     public async Task<IActionResult> DeleteBook(string id, CancellationToken cancellationToken)
     {
       var request = new DeleteBookRequest{Id = id};
-      var response = await this.mediator.Send(request, cancellationToken);
+      var response = await mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
         return Ok(response);
@@ -68,7 +66,7 @@ namespace BookStore.Controllers
       CancellationToken cancellationToken)
     {
       request.Id = id;
-      var response = await this.mediator.Send(request, cancellationToken);
+      var response = await mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
         return Ok(response);

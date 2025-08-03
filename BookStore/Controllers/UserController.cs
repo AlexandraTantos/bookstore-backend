@@ -8,8 +8,6 @@ namespace BookStore.Controllers;
 [Route("[controller]")]
 public class UserController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator mediator = mediator;
-
     [HttpPost("RegisterUser")]
     public async Task<IActionResult> RegisterUser([FromBody] InsertUserRequest request,CancellationToken cancellationToken)
     {

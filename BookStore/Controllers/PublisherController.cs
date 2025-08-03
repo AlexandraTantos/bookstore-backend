@@ -12,12 +12,10 @@ namespace BookStore.Controllers;
 [Route("[controller]")]
 public class PublisherController(IMediator mediator) : ControllerBase
 {
-    private IMediator mediator = mediator;
-
     [HttpGet("GetAllPublishers")]
     public async Task<IActionResult> GetAllPublishers(CancellationToken cancellationToken)
     {
-        var response = await this.mediator.Send(new GetAllPublishersRequest(), cancellationToken);
+        var response = await mediator.Send(new GetAllPublishersRequest(), cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
@@ -29,7 +27,7 @@ public class PublisherController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetPublisherById(string id, CancellationToken cancellationToken)
     {
         var request = new GetPublisherByIdRequest { Id = id };
-        var response = await this.mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
@@ -41,7 +39,7 @@ public class PublisherController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> InsertPublisher([FromBody] CreatePublisherRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await this.mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK ||
             response.StatusCode == System.Net.HttpStatusCode.Created)
         {
@@ -54,7 +52,7 @@ public class PublisherController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeletePublisher(string id, CancellationToken cancellationToken)
     {
         var request = new DeletePublisherRequest { Id = id };
-        var response = await this.mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
@@ -67,7 +65,7 @@ public class PublisherController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken)
     {
         request.Id = id;
-        var response = await this.mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
