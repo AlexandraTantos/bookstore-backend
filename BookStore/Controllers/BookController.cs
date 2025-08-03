@@ -27,9 +27,9 @@ namespace BookStore.Controllers
     }
 
     [HttpGet("GetAllBooks")]
-    public async Task<IActionResult> GetAllBooks(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllBooks([FromQuery] GetAllBooksRequest request,CancellationToken cancellationToken)
     {
-      var response = await mediator.Send(new GetAllBooksRequest(), cancellationToken);
+      var response = await mediator.Send(request, cancellationToken);
       if (response.StatusCode == System.Net.HttpStatusCode.OK)
       {
         return Ok(response);

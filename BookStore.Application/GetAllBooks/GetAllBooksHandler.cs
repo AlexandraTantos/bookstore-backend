@@ -5,23 +5,23 @@ using MediatR;
 
 namespace BookStore.Application.GetAllBooks;
 
-public class GetAllBooksHandler :IRequestHandler<GetAllBooksRequest, GetAllBooksResponse>
+public class GetAllBooksHandler(IBookRepository bookRepository, IMapper mapper)
+    : IRequestHandler<GetAllBooksRequest, GetAllBooksResponse>
 {
-    private IBookRepository bookRepository;
-    private IMapper mapper;
-
-    public GetAllBooksHandler(IBookRepository bookRepository, IMapper mapper)
-    {
-        this.bookRepository = bookRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<GetAllBooksResponse> Handle(GetAllBooksRequest request, CancellationToken cancellationToken)
     {
+        int skip = (request.Page - 1) * request.PageSize;
         try
         {
-            var books = await this.bookRepository.GetAllAsync(cancellationToken);
+            var books = await bookRepository.GetAllAsync(skip: skip,
+                take: request.PageSize,
+                sortBy: request.SortBy,
+                sortOrder: request.SortOrder,
+                titleFilter: request.Title,
+                yearFilter: request.Year,
+                cancellationToken);
             var bookDtos = mapper.Map<List<BookDto>>(books);
+            
             return new GetAllBooksResponse
             {
                 Books = bookDtos,
