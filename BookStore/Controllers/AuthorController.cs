@@ -1,6 +1,7 @@
 using System.Net;
 using BookStore.Application.CreateAuthor;
 using BookStore.Application.DeleteAuthor;
+using BookStore.Application.GetAllAuthors;
 using BookStore.Application.GetAllPublishers;
 using BookStore.Application.GetAuthorById;
 using BookStore.Application.UpdateAuthor;
@@ -14,15 +15,14 @@ namespace BookStore.Controllers;
 public class AuthorController(IMediator mediator) : ControllerBase
 {
     [HttpGet("GetAllAuthors")]
-    public async Task<IActionResult> GetAllAuthors(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllAuthors([FromQuery] GetAllAuthorsRequest request,CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(new GetAllPublishersRequest(),cancellationToken);
-        if (response.StatusCode == HttpStatusCode.OK)
+        var response = await mediator.Send(request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
         }
-
-        return BadRequest();
+        return BadRequest(response);
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAuthorById(string id, CancellationToken cancellationToken)

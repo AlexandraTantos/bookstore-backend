@@ -18,14 +18,23 @@ public class GetAllAuthorsHandler :IRequestHandler<GetAllAuthorsRequest, GetAllA
     }
     public async Task<GetAllAuthorsResponse> Handle(GetAllAuthorsRequest request, CancellationToken cancellationToken)
     {
+        int skip = (request.Page - 1) * request.PageSize;
         try
         {
-            var authors = await this.authorRepository.GetAllAsync(cancellationToken);
+            var authors = await authorRepository.GetAllAsync(skip: skip,
+                take: request.PageSize,
+                sortBy: request.SortBy,
+                sortOrder: request.SortOrder,
+                firstNameFilter: request.FirstName,
+                lastNameFilter: request.LastName,
+                birthDateFilter: request.BirthDate,
+                cancellationToken);
             var authorDtos = mapper.Map<List<AuthorDto>>(authors);
-            return new GetAllAuthorsResponse
+            
+            return new GetAllAuthorsResponse()
             {
                 Authors = authorDtos,
-                StatusCode = HttpStatusCode.OK
+                StatusCode = System.Net.HttpStatusCode.OK
             };
         }
         catch (Exception ex)

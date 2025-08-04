@@ -1,5 +1,6 @@
 using BookStore.Abstraction;
 using BookStore.Domain;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BookStore.Repositories;
@@ -36,9 +37,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<List<Author>> GetAllAsync(CancellationToken cancellationToken)
     {
-       var filter = Builders<Author>.Filter.Empty;
-       List<Author> authors = await this.authorCollection.Find(filter).Limit(10).ToListAsync(cancellationToken);
-       return authors;
+        return await GetAllAsync(null, null, null, null, null, null, null,cancellationToken);
     }
 
     public async Task<bool> UpdateAsync(Author item, CancellationToken cancellationToken)
@@ -51,5 +50,45 @@ public class AuthorRepository : IAuthorRepository
             .Set(x => x.Nationality, item.Nationality);
         var response = await this.authorCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
         return response.MatchedCount != 0 && response.ModifiedCount != 0; 
+    }
+
+    public async Task<List<Author>> GetAllAsync(int? skip = null, int? take = null, string? sortBy = null, string? sortOrder = null,
+        string? firstNameFilter = null, string? lastNameFilter = null, int? birthDateFilter = null,
+        CancellationToken cancellationToken = default)
+    {
+        var filterBuilder = Builders<Author>.Filter;
+        var filter = filterBuilder.Empty;
+        
+        if (!string.IsNullOrEmpty(firstNameFilter))
+            filter &= filterBuilder.Regex(b => b.FirstName, new BsonRegularExpression(firstNameFilter, "i"));
+
+
+        if (!string.IsNullOrEmpty(lastNameFilter))
+            filter &= filterBuilder.Regex(b => b.LastName, new BsonRegularExpression(lastNameFilter, "i"));
+        
+        if (birthDateFilter.HasValue)
+        {
+            var startDate = new DateTime(birthDateFilter.Value, 1, 1);
+            var endDate = startDate.AddYears(1).AddTicks(-1);
+
+            filter &= filterBuilder.And(
+                filterBuilder.Gte(b => b.BirthDate, startDate),
+                filterBuilder.Lte(b => b.BirthDate, endDate));
+        }
+        var query = authorCollection.Find(filter);
+
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            var sortDefinition = sortOrder == "desc"
+                ? Builders<Author>.Sort.Descending(sortBy)
+                : Builders<Author>.Sort.Ascending(sortBy);
+
+            query = query.Sort(sortDefinition);
+        }
+
+        if (skip.HasValue) query = query.Skip(skip.Value);
+        if (take.HasValue) query = query.Limit(take.Value);
+
+        return await query.ToListAsync(cancellationToken);
     }
 }
