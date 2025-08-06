@@ -15,3 +15,6 @@ Features:
   - Full CRUD operations for: Books, Authors, Publishers
   - Fluent validation for all requests
   - Global error handling middleware
+  - Filtering support (by name, birth year, etc.)
+  - Sorting (ascending/descending by various fields like FirstName, Title, Nationality, etc.)
+  - Pagination for list endpoints (skip/take logic)
