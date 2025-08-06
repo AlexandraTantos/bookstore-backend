@@ -20,8 +20,16 @@ public class GetAllPublishersHandler :IRequestHandler<GetAllPublishersRequest, G
     {
         try
         {
-            var publishers = await publisherRepository.GetAllAsync(cancellationToken);
+            int skip = (request.Page - 1) * request.PageSize;
+            var publishers = await publisherRepository.GetAllAsync(skip: skip,
+                take: request.PageSize,
+                sortBy: request.SortBy,
+                sortOrder: request.SortOrder,
+                nameFilter: request.Name,
+                cancellationToken);
+            
             var publishersDtos = mapper.Map<List<PublisherDto>>(publishers);
+            
             return new GetAllPublishersResponse
             {
                 Publishers = publishersDtos,

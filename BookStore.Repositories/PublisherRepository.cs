@@ -1,5 +1,6 @@
 using BookStore.Abstraction;
 using BookStore.Domain;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BookStore.Repositories;
@@ -36,9 +37,7 @@ public class PublisherRepository :IPublisherRepository
 
     public async Task<List<Publisher>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var filter = Builders<Publisher>.Filter.Empty;
-        List<Publisher> publishersFromDb = await this.publishersCollection.Find(filter).Limit(10).ToListAsync(cancellationToken);
-        return publishersFromDb;
+        return await GetAllAsync(null, null, null, null, null,cancellationToken);
     }
 
     public async Task<bool> UpdateAsync(Publisher item, CancellationToken cancellationToken)
@@ -49,5 +48,32 @@ public class PublisherRepository :IPublisherRepository
             .Set(x => x.Address, item.Address);
         var result = await this.publishersCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
         return result.MatchedCount != 0 && result.ModifiedCount != 0;
+    }
+
+    public async Task<List<Publisher>> GetAllAsync(int? skip = null, int? take = null, string? sortBy = null, string? sortOrder = null,
+        string? nameFilter = null, CancellationToken cancellationToken = default)
+    {
+        var filterBuilder = Builders<Publisher>.Filter;
+        var filter = filterBuilder.Empty;
+        
+        if (!string.IsNullOrEmpty(nameFilter))
+        {
+            filter &= filterBuilder.Regex(b => b.Name, new BsonRegularExpression(nameFilter, "i"));
+        }
+        var query = publishersCollection.Find(filter);
+
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            var sortDefinition = sortOrder == "desc"
+                ? Builders<Publisher>.Sort.Descending(sortBy)
+                : Builders<Publisher>.Sort.Ascending(sortBy);
+
+            query = query.Sort(sortDefinition);
+        }
+
+        if (skip.HasValue) query = query.Skip(skip.Value);
+        if (take.HasValue) query = query.Limit(take.Value);
+
+        return await query.ToListAsync(cancellationToken);
     }
 }

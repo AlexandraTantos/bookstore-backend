@@ -13,9 +13,9 @@ namespace BookStore.Controllers;
 public class PublisherController(IMediator mediator) : ControllerBase
 {
     [HttpGet("GetAllPublishers")]
-    public async Task<IActionResult> GetAllPublishers(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllPublishers([FromQuery] GetAllPublishersRequest request,CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(new GetAllPublishersRequest(), cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return Ok(response);
