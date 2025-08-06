@@ -5,22 +5,16 @@ using MediatR;
 
 namespace BookStore.Application.CreateBook
 {
-  public class CreateBookHandler : IRequestHandler<CreateBookRequest, CreateBookResponse>
+  public class CreateBookHandler(IBookRepository bookRepository, IMapper mapper)
+    : IRequestHandler<CreateBookRequest, CreateBookResponse>
   {
-    private readonly IBookRepository bookRepository;
-    private readonly IMapper mapper;
-    public CreateBookHandler(IBookRepository bookRepository, IMapper mapper)
-    {
-      this.bookRepository = bookRepository;
-      this.mapper = mapper;
-    }
     public async Task<CreateBookResponse> Handle(CreateBookRequest request, CancellationToken cancellationToken)
     {
       try
       {
         BookDto bookDto = request.BookDto;
-        Book book = this.mapper.Map<Book>(bookDto);
-        var response = await this.bookRepository.InsertAsync(book, cancellationToken);
+        Book book = mapper.Map<Book>(bookDto);
+        var response = await bookRepository.InsertAsync(book, cancellationToken);
         return new CreateBookResponse(response);
       }
       catch (Exception ex)

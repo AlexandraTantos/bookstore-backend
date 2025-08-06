@@ -4,5 +4,5 @@ namespace BookStore.Application.GetPublisherById;
 
 public class GetPublisherByIdRequest : IRequest<GetPublisherByIdResponse>
 {
-    public string Id { get; set; }
+    public string Id { get; init; } = null!;
 }

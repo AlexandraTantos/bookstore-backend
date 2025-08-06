@@ -6,17 +6,9 @@ using MediatR;
 
 namespace BookStore.Application.CreateAuthor;
 
-public class CreateAuthorHandler :IRequestHandler<CreateAuthorRequest, CreateAuthorResponse>
+public class CreateAuthorHandler(IAuthorRepository authorRepository, IMapper mapper)
+    : IRequestHandler<CreateAuthorRequest, CreateAuthorResponse>
 {
-    private readonly IAuthorRepository authorRepository;
-    private readonly IMapper mapper;
-
-    public CreateAuthorHandler(IAuthorRepository authorRepository, IMapper mapper)
-    {
-        this.authorRepository = authorRepository;
-        this.mapper = mapper;
-    }
-    
     public async Task<CreateAuthorResponse> Handle(CreateAuthorRequest request, CancellationToken cancellationToken)
     {
         try

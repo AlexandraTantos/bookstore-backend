@@ -5,5 +5,5 @@ namespace BookStore.Application.CreateAuthor;
 
 public class CreateAuthorRequest : IRequest<CreateAuthorResponse>
 {
-    public AuthorDto AuthorDto { get; set; }
+    public AuthorDto AuthorDto { get; set; } = null!;
 }

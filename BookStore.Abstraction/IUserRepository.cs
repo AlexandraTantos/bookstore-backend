@@ -1,7 +1,6 @@
-using BookStore.Abstraction;
 using BookStore.Domain;
 
-namespace BookStore.Repositories;
+namespace BookStore.Abstraction;
 
 public interface IUserRepository : IRepository<User>
 {

@@ -5,18 +5,17 @@ namespace BookStore.Application.CreatePublisher;
 
 public class CreatePublisherResponse
 {
-    public HttpStatusCode  StatusCode { get; set; }
-    public string Message { get; set; }
-    public string Id { get; set; }
+    public HttpStatusCode  StatusCode { get; init; }
+    public string Message { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     public CreatePublisherResponse(string id)
     {
         this.Id = id;
-        if (Id != null && Id.IsValidObjectId())
+        if (id.IsValidObjectId())
         {
             this.StatusCode = HttpStatusCode.Created;
             this.Message = "Created";
-
         }
         else
         {

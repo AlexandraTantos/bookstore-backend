@@ -5,5 +5,5 @@ namespace BookStore.Application.CreatePublisher;
 
 public class CreatePublisherRequest:IRequest<CreatePublisherResponse>
 {
-    public PublisherDto PublisherDto { get; set; }
+    public PublisherDto PublisherDto { get; set; } = null!;
 }

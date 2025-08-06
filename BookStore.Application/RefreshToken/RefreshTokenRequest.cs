@@ -4,5 +4,5 @@ namespace BookStore.Application.RefreshToken;
 
 public class RefreshTokenRequest : IRequest<RefreshTokenResponse>
 {
-    public string RefreshToken { get; set; }
+    public string RefreshToken { get; set; } = null!;
 }

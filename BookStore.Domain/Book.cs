@@ -8,6 +8,6 @@ namespace BookStore.Domain
 
     [BsonId]
     [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
   }
 }

@@ -5,20 +5,19 @@ namespace BookStore.Application.CreateBook
 {
   public class CreateBookResponse
   {
-    public HttpStatusCode StatusCode {  get; set; } 
+    public HttpStatusCode StatusCode {  get; init; } 
 
     public string Message { get; set; } = string.Empty;
 
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
 
-    public CreateBookResponse(string Id)
+    public CreateBookResponse(string id)
     {
-      this.Id = Id;
-      if (Id != null && Id.IsValidObjectId())
+      this.Id = id;
+      if (id.IsValidObjectId())
       {
         this.StatusCode = HttpStatusCode.Created;
         this.Message = "Created";
-
       }
       else
       {

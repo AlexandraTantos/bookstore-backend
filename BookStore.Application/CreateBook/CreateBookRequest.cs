@@ -5,6 +5,6 @@ namespace BookStore.Application.CreateBook
 {
   public class CreateBookRequest : IRequest<CreateBookResponse>
   {
-    public BookDto BookDto {  get; set; }
+    public BookDto BookDto {  get; set; } = null!;
   }
 }

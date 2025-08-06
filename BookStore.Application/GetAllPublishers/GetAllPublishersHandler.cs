@@ -5,17 +5,9 @@ using MediatR;
 
 namespace BookStore.Application.GetAllPublishers;
 
-public class GetAllPublishersHandler :IRequestHandler<GetAllPublishersRequest, GetAllPublishersResponse>
+public class GetAllPublishersHandler(IPublisherRepository publisherRepository, IMapper mapper)
+    : IRequestHandler<GetAllPublishersRequest, GetAllPublishersResponse>
 {
-    private IPublisherRepository publisherRepository;
-    private IMapper mapper;
-
-    public GetAllPublishersHandler(IPublisherRepository publisherRepository, IMapper mapper)
-    {
-        this.publisherRepository = publisherRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<GetAllPublishersResponse> Handle(GetAllPublishersRequest request, CancellationToken cancellationToken)
     {
         try

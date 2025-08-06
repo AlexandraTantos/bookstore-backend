@@ -4,10 +4,10 @@ namespace BookStore.Application.RefreshToken;
 
 public class RefreshTokenResponse
 {
-    public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
-    public string Message { get; set; }
-    public HttpStatusCode StatusCode { get; set; }
+    public string AccessToken { get; set; } = null!;
+    public string RefreshToken { get; set; } = null!;
+    public string Message { get; init; } = null!;
+    public HttpStatusCode StatusCode { get; init; }
 
     public RefreshTokenResponse() { }
 

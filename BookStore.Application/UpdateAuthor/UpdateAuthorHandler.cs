@@ -1,29 +1,28 @@
 using System.Net;
 using AutoMapper;
 using BookStore.Abstraction;
-using BookStore.Application.UpdateBook;
 using BookStore.Domain;
-using BookStore.Repositories;
 using MediatR;
 
 namespace BookStore.Application.UpdateAuthor;
 
-public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorRequest, UpdateAuthorResponse>
+public class UpdateAuthorHandler(IAuthorRepository authorRepository, IMapper mapper)
+    : IRequestHandler<UpdateAuthorRequest, UpdateAuthorResponse>
 {
-    private IAuthorRepository authorRepository;
-    private IMapper mapper;
-
-    public UpdateAuthorHandler(IAuthorRepository authorRepository, IMapper mapper)
-    {
-        this.authorRepository = authorRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<UpdateAuthorResponse> Handle(UpdateAuthorRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
+            if (request.Id == null)
+            {
+                return new UpdateAuthorResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Author ID must be provided"
+                };
+            }
+
             var author = await authorRepository.GetByIdAsync(request.Id, cancellationToken);
             if (author == null)
             {
@@ -42,6 +41,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorRequest, UpdateAu
 
             await authorRepository.UpdateAsync(author, cancellationToken);
             var updatedAuthor = mapper.Map<AuthorDto>(author);
+
             return new UpdateAuthorResponse
             {
                 StatusCode = HttpStatusCode.OK,

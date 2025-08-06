@@ -6,16 +6,9 @@ using MediatR;
 
 namespace BookStore.Application.GetAllAuthors;
 
-public class GetAllAuthorsHandler :IRequestHandler<GetAllAuthorsRequest, GetAllAuthorsResponse>
+public class GetAllAuthorsHandler(IAuthorRepository authorRepository, IMapper mapper)
+    : IRequestHandler<GetAllAuthorsRequest, GetAllAuthorsResponse>
 {
-    private IAuthorRepository authorRepository;
-    private IMapper mapper;
-
-    public GetAllAuthorsHandler(IAuthorRepository authorRepository, IMapper mapper)
-    {
-        this.authorRepository = authorRepository;
-        this.mapper = mapper;
-    }
     public async Task<GetAllAuthorsResponse> Handle(GetAllAuthorsRequest request, CancellationToken cancellationToken)
     {
         int skip = (request.Page - 1) * request.PageSize;

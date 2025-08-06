@@ -6,22 +6,14 @@ using MediatR;
 
 namespace BookStore.Application.GetBookById;
 
-public class GetBookByIdHandler : IRequestHandler<GetBookByIdRequest, GetBookByIdResponse>
+public class GetBookByIdHandler(IBookRepository bookRepository, IMapper mapper)
+    : IRequestHandler<GetBookByIdRequest, GetBookByIdResponse>
 {
-    private readonly IBookRepository bookRepository;
-    private readonly IMapper mapper;
-
-    public GetBookByIdHandler(IBookRepository bookRepository, IMapper mapper)
-    {
-        this.bookRepository = bookRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<GetBookByIdResponse> Handle(GetBookByIdRequest request, CancellationToken cancellationToken)
     {
         try
         {
-            var book = await this.bookRepository.GetByIdAsync(request.Id, cancellationToken);
+            var book = await bookRepository.GetByIdAsync(request.Id, cancellationToken);
             var bookDto = mapper.Map<BookDto>(book);
             return new GetBookByIdResponse
             {

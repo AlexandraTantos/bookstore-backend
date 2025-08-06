@@ -3,15 +3,8 @@ using BookStore.Abstraction;
 using MediatR;
 
 namespace BookStore.Application.RefreshToken;
-public class RefreshTokenHandler : IRequestHandler<RefreshTokenRequest, RefreshTokenResponse>
+public class RefreshTokenHandler(IAuth authService) : IRequestHandler<RefreshTokenRequest, RefreshTokenResponse>
 {
-    private readonly IAuth authService;
-
-    public RefreshTokenHandler(IAuth authService)
-    {
-        this.authService = authService;
-    }
-
     public Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var newTokens = authService.GetNewPairs(request.RefreshToken);

@@ -5,14 +5,14 @@ namespace BookStore.Application.CreateAuthor;
 
 public class CreateAuthorResponse
 {
-    public HttpStatusCode StatusCode { get; set; }
+    public HttpStatusCode StatusCode { get; init; }
     public string Message { get; set; } = string.Empty;
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
 
-    public CreateAuthorResponse(string Id)
+    public CreateAuthorResponse(string id)
     {
-        this.Id = Id;
-        if (Id != null && Id.IsValidObjectId())
+        this.Id = id;
+        if (id.IsValidObjectId())
         {
             this.StatusCode =  HttpStatusCode.Created;
             this.Message = "Author Created";

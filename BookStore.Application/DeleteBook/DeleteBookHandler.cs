@@ -1,19 +1,11 @@
 using System.Net;
-using AutoMapper;
 using BookStore.Repositories;
 using MediatR;
 
 namespace BookStore.Application.DeleteBook;
 
-public class DeleteBookHandler: IRequestHandler<DeleteBookRequest, DeleteBookResponse>
+public class DeleteBookHandler(IBookRepository bookRepository) : IRequestHandler<DeleteBookRequest, DeleteBookResponse>
 {
-    private IBookRepository bookRepository;
-
-    public DeleteBookHandler(IBookRepository bookRepository)
-    {
-        this.bookRepository = bookRepository;
-    }
-
     public async Task<DeleteBookResponse> Handle(DeleteBookRequest request, CancellationToken cancellationToken)
     {
         try
@@ -30,7 +22,7 @@ public class DeleteBookHandler: IRequestHandler<DeleteBookRequest, DeleteBookRes
             return new DeleteBookResponse
             {
                 StatusCode = HttpStatusCode.InternalServerError,
-                Message = "Server error, try again later"
+                Message = "Server error, try again later: " + ex.Message
             };
         }
     }

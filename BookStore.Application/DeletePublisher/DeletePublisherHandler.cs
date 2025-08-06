@@ -4,23 +4,15 @@ using MediatR;
 
 namespace BookStore.Application.DeletePublisher;
 
-public class DeletePublisherHandler : IRequestHandler<DeletePublisherRequest, DeletePublisherResponse>
+public class DeletePublisherHandler(IPublisherRepository publisherRepository)
+    : IRequestHandler<DeletePublisherRequest, DeletePublisherResponse>
 {
-    private IPublisherRepository publisherRepository;
-    private IMapper mapper;
-
-    public DeletePublisherHandler(IPublisherRepository publisherRepository, IMapper mapper)
-    {
-        this.publisherRepository = publisherRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<DeletePublisherResponse> Handle(DeletePublisherRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
-            await this.publisherRepository.DeleteAsync(request.Id,cancellationToken);
+            await publisherRepository.DeleteAsync(request.Id,cancellationToken);
             return new DeletePublisherResponse
             {
                 Message = "Publisher successfully deleted",

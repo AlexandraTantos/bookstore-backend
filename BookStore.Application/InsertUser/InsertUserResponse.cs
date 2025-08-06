@@ -4,9 +4,9 @@ namespace BookStore.Application.InsertUser;
 
 public class InsertUserResponse
 {
-    public string Id { get; set; }
-    public string Message { get; set; }
-    public HttpStatusCode StatusCode { get; set; }
+    public string Id { get; set; } = null!;
+    public string Message { get; set; } = null!;
+    public HttpStatusCode StatusCode { get; init; }
   
     public InsertUserResponse() { }
 

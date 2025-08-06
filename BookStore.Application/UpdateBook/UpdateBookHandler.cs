@@ -5,26 +5,26 @@ using MediatR;
 
 namespace BookStore.Application.UpdateBook;
 
-public class UpdateBookHandler : IRequestHandler<UpdateBookRequest, UpdateBookResponse>
+public class UpdateBookHandler(IBookRepository bookRepository, IMapper mapper)
+    : IRequestHandler<UpdateBookRequest, UpdateBookResponse>
 {
-    private IBookRepository bookRepository;
-    private IMapper mapper;
-
-    public UpdateBookHandler(IBookRepository bookRepository, IMapper mapper)
-    {
-        this.bookRepository = bookRepository;
-        this.mapper = mapper;
-    }
-
     public async Task<UpdateBookResponse> Handle(UpdateBookRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
+            if (request.Id == null)
+            {
+                return new UpdateBookResponse()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Book ID must be provided"
+                };
+            }
+
             var book = await bookRepository.GetByIdAsync(request.Id, cancellationToken);
             if (book == null)
-            {
-                return new UpdateBookResponse
+            { return new UpdateBookResponse
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Message = "Book not found"

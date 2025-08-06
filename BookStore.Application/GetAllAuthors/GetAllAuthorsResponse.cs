@@ -6,6 +6,6 @@ namespace BookStore.Application.GetAllAuthors;
 public class GetAllAuthorsResponse
 {
     public List<AuthorDto> Authors { get; set; }
-    public HttpStatusCode  StatusCode { get; set; }
+    public HttpStatusCode  StatusCode { get; init; }
     public string Message { get; set; }
 }

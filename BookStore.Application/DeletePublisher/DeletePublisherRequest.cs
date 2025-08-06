@@ -4,5 +4,5 @@ namespace BookStore.Application.DeletePublisher;
 
 public class DeletePublisherRequest:IRequest<DeletePublisherResponse>
 {
-    public string Id { get; set; }
+    public string Id { get; init; } = null!;
 }

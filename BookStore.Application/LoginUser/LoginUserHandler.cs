@@ -2,23 +2,14 @@ using System.Net;
 using AutoMapper;
 using BookStore.Abstraction;
 using BookStore.Domain;
-using BookStore.Repositories;
 using MediatR;
 
 namespace BookStore.Application.LoginUser;
 
-public class LoginUserHandler : IRequestHandler<LoginUserRequest, LoginUserResponse>
+public class LoginUserHandler(IUserRepository userRepository, IAuth authService, IMapper mapper)
+    : IRequestHandler<LoginUserRequest, LoginUserResponse>
 {
-    private readonly IUserRepository userRepository;
-    private readonly IAuth authService;
-    private readonly IMapper mapper;
-
-    public LoginUserHandler(IUserRepository userRepository, IAuth authService, IMapper mapper)
-    {
-        this.userRepository = userRepository;
-        this.authService = authService;
-        this.mapper = mapper;
-    }
+    private readonly IMapper mapper = mapper;
 
     public async Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken)
     {
