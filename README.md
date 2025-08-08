@@ -9,6 +9,7 @@ Technologies Used:
   - FluentValidation – for request validation
   - JWT Authentication – with refresh token support
   - Swagger/OpenAPI – for API documentation
+  - xUnit and Moq - for unit testing
 
 Features:
   - User registration and login using JWT with refresh token
@@ -18,3 +19,4 @@ Features:
   - Filtering support (by name, birth year, etc.)
   - Sorting (ascending/descending by various fields like FirstName, Title, Nationality, etc.)
   - Pagination for list endpoints (skip/take logic)
+  - Unit tests to validate service logic
