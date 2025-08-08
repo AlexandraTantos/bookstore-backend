@@ -18,9 +18,7 @@ namespace BookStore.Repositories
       var filter = Builders<Book>.Filter.Eq(x => x.Id, id);
       await this.booksCollection.DeleteOneAsync(filter, cancellationToken);
     }
-
-   
-
+    
     public async Task<Book> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
       var filter = Builders<Book>.Filter.Eq(x => x.Id, id);
@@ -35,7 +33,6 @@ namespace BookStore.Repositories
 
     public async Task<string> InsertAsync(Book item, CancellationToken cancellationToken)
     {
-      item.Id = null;
       await this.booksCollection.InsertOneAsync(item, cancellationToken);
       return item.Id;
     }

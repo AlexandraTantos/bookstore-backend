@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.MongoDb", "BookSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Repositories", "BookStore.Repositories\BookStore.Repositories.csproj", "{0C856359-FEF8-4C3B-ACF1-EB4895C032FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookRepositoryTest", "BookRepositoryTest\BookRepositoryTest.csproj", "{69AADA4F-AD26-4468-9816-C58F24081909}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Tests", "BookStore.Tests\BookStore.Tests.csproj", "{69AADA4F-AD26-4468-9816-C58F24081909}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Services", "BookStore.Services\BookStore.Services.csproj", "{754BD21F-AE73-47F5-B837-710DAAB05328}"
 EndProject
