@@ -17,7 +17,7 @@ public class AuthorServiceTests
     }
 
     [Fact]
-    public async Task AddBookAsync_ShouldReturnId_WhenValidBook()
+    public async Task AddAuthorAsync_ShouldReturnId_WhenValidAuthor()
     {
         var author = new Author
         {
@@ -52,7 +52,7 @@ public class AuthorServiceTests
     }
     
     [Fact]
-    public async Task GetAuthorByIdAsync_ShouldReturnBook_WhenBookExists()
+    public async Task GetAuthorByIdAsync_ShouldReturnAuthor_WhenAuthorExists()
     {
         var author = new Author { Id = "1", FirstName = "John",LastName = "Doe", BirthDate = DateTime.Now, Nationality = "French", SpokenLanguages = new List<string> { "Fiction" } };
 
