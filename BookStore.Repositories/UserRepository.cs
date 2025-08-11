@@ -4,16 +4,10 @@ using MongoDB.Driver;
 
 namespace BookStore.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository(IDatabase database) : IUserRepository
     {
-        private readonly IDatabase database;
-        private readonly IMongoCollection<User> usersCollection;
-
-        public UserRepository(IDatabase database)
-        {
-            this.database = database;
-            this.usersCollection = database.GetMongoCollection<User>("Users");
-        }
+        private readonly IDatabase database = database;
+        private readonly IMongoCollection<User> usersCollection = database.GetMongoCollection<User>("Users");
 
         public async Task<string> InsertAsync(User user, CancellationToken cancellationToken)
         {

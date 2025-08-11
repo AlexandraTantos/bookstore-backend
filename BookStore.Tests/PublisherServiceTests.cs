@@ -40,7 +40,7 @@ public class PublisherServiceTests
         var publishers = new List<Publisher>
         {
             new Publisher { Id = "1", Name = "John Doe", Address = "St Main Street", Email = "test@yahoo.com"},
-            new Publisher { Id = "2", Name = "Jim Doe", Address = "123 St Main Streer",Email = "Test@gmail.com"}
+            new Publisher { Id = "2", Name = "Jim Doe", Address = "123 St Main Street",Email = "Test@gmail.com"}
         };
 
         mockPublisherRepo.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))

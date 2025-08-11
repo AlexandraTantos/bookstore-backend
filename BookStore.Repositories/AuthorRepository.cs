@@ -5,16 +5,10 @@ using MongoDB.Driver;
 
 namespace BookStore.Repositories;
 
-public class AuthorRepository : IAuthorRepository
+public class AuthorRepository(IDatabase database) : IAuthorRepository
 {
-    private IDatabase database;
-    private IMongoCollection<Author> authorCollection;
+    private readonly IMongoCollection<Author> authorCollection = database.GetMongoCollection<Author>("Authors");
 
-    public AuthorRepository(IDatabase database)
-    {
-        this.database = database;
-        this.authorCollection = database.GetMongoCollection<Author>("Authors");
-    }
     public async Task<string> InsertAsync(Author item, CancellationToken cancellationToken)
     {
         item.Id = null;

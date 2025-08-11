@@ -1,9 +1,7 @@
-using BookStore.Abstraction;
 using BookStore.Domain;
 using BookStore.Repositories;
 using BookStore.Services;
 using Moq;
-using Xunit;
 
 namespace BookStore.Tests
 {

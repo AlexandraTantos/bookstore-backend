@@ -7,17 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BookStore.Services
 {
-    public class Auth : IAuth
+    public class Auth(IAuthSecuredKey authSecuredKey) : IAuth
     {
-        private readonly IAuthSecuredKey authSecuredKey;
         private readonly List<string> blacklistedAccessTokens = new();
         private readonly List<string> blacklistedRefreshTokens = new();
         private readonly Dictionary<string, (string userId, string role)> refreshTokenStore = new();
-
-        public Auth(IAuthSecuredKey authSecuredKey)
-        {
-            this.authSecuredKey = authSecuredKey;
-        }
 
         public string GenerateAccessToken(string userId, string role)
         {
@@ -101,8 +95,7 @@ namespace BookStore.Services
             if (!blacklistedRefreshTokens.Contains(refreshToken))
                 blacklistedRefreshTokens.Add(refreshToken);
 
-            if (refreshTokenStore.ContainsKey(refreshToken))
-                refreshTokenStore.Remove(refreshToken);
+            refreshTokenStore.Remove(refreshToken);
         }
     }
 }
