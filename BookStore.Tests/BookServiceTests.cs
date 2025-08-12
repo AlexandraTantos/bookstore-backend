@@ -65,5 +65,48 @@ namespace BookStore.Tests
             Assert.NotNull(result);
             Assert.Equal("Book1", result.Title);
         }
+       
+        [Fact]
+        public async Task DeleteBookByIdAsync_ShouldDelete_WhenBookExists()
+        {
+            var book = new Book 
+            { 
+                Id = "1", 
+                Title = "Book1", 
+                YearOfPublication = DateTime.Now, 
+                Genres = new List<string> { "Fiction" } 
+            };
+
+            await bookService.AddBookAsync(book, CancellationToken.None);
+            
+            mockRepo.Setup(r => r.DeleteAsync("1", It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+            
+            mockRepo.Setup(r => r.GetByIdAsync("1", It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Book?)null);
+            await bookService.DeleteBookByIdAsync("1", CancellationToken.None);
+
+           var deletedBook = await bookService.GetBookByIdAsync("1", CancellationToken.None);
+            Assert.Null(deletedBook);
+
+           mockRepo.Verify(r => r.DeleteAsync("1", It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+
+
+        [Fact]
+        public async Task UpdateBook_ShouldUpdate_WhenBookExists()
+        {
+            var book = new Book { Id = "1", Title = "Book1", YearOfPublication = DateTime.Now, Genres = new List<string> { "Fiction" } };
+            await bookService.AddBookAsync(book, CancellationToken.None);
+            mockRepo.Setup(r => r.GetByIdAsync("1", It.IsAny<CancellationToken>()))
+                .ReturnsAsync(book);
+
+            book.Title = "Updated";
+            await bookService.UpdateBookAsync(book, CancellationToken.None);
+        
+            var updatedBook = await bookService.GetBookByIdAsync("1", CancellationToken.None);
+            Assert.Equal("Updated", updatedBook.Title);
+        }
     }
 }
