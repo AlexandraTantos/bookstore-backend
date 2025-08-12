@@ -23,5 +23,15 @@ namespace BookStore.Services
         {
             return await bookRepository.GetByIdAsync(id, cancellationToken);
         }
+
+        public async Task DeleteBookByIdAsync(string id, CancellationToken cancellationToken)
+        {
+            await bookRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        public async Task<bool> UpdateBookAsync(Book book, CancellationToken cancellationToken)
+        {
+            return await bookRepository.UpdateAsync(book, cancellationToken);
+        }
     }
 }

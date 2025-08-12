@@ -22,4 +22,14 @@ public class PublisherService(IPublisherRepository publisherRepository)
     {
         return await publisherRepository.GetByIdAsync(id, cancellationToken);
     }
+
+    public async Task DeletePublisherByIdAsync(string id, CancellationToken cancellationToken)
+    {
+        await publisherRepository.DeleteAsync(id, cancellationToken);
+    }
+
+    public async Task<bool> UpdatePublisherAsync(Publisher publisher, CancellationToken cancellationToken)
+    {
+        return await publisherRepository.UpdateAsync(publisher, cancellationToken);
+    }
 }

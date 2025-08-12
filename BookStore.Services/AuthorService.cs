@@ -23,4 +23,14 @@ public class AuthorService(IAuthorRepository authorRepository)
     {
         return await authorRepository.GetByIdAsync(authorId, cancellationToken);
     }
+
+    public async Task DeleteAuthorByIdAsync(string authorId, CancellationToken cancellationToken)
+    {
+        await authorRepository.DeleteAsync(authorId, cancellationToken);
+    }
+
+    public async Task<bool> UpdateAuthorAsync(Author author, CancellationToken cancellationToken)
+    {
+        return await authorRepository.UpdateAsync(author, cancellationToken);
+    }
 }
