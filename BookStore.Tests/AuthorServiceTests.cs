@@ -66,5 +66,38 @@ public class AuthorServiceTests
         Assert.Equal("Doe", result.LastName);
         Assert.Equal("French", result.Nationality);
     }
-    
+
+    [Fact]
+    public async Task DeleteAuthorByIdAsync_ShouldDelete_WhenAuthorExists()
+    {
+        var author = new Author { Id = "1", FirstName = "John",LastName = "Doe", BirthDate = DateTime.Now, Nationality = "French", SpokenLanguages = new List<string> { "Fiction" } };
+        
+        await authorService.AddAuthorAsync(author, CancellationToken.None);
+        
+        mockAuthorRepository.Setup(r => r.DeleteAsync("1", It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+        mockAuthorRepository.Setup(r => r.GetByIdAsync("1", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Author?)null);
+
+        await authorService.DeleteAuthorByIdAsync("1", CancellationToken.None);
+        var deletedAuthor =  await authorService.GetAuthorAsync("1", CancellationToken.None);
+       
+        Assert.Null(deletedAuthor);
+        mockAuthorRepository.Verify(r => r.DeleteAsync("1", It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateAuthor_ShouldUpdate_WhenAuthorExists()
+    {
+        var author = new Author { Id = "1", FirstName = "John",LastName = "Doe", BirthDate = DateTime.Now, Nationality = "French", SpokenLanguages = new List<string> { "Fiction" } };
+        
+        await authorService.AddAuthorAsync(author, CancellationToken.None);
+        mockAuthorRepository.Setup(r => r.GetByIdAsync("1", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(author);
+
+        author.FirstName = "Updated";
+        await authorService.UpdateAuthorAsync(author, CancellationToken.None);
+        var updatedAuthor = await authorService.GetAuthorAsync("1", CancellationToken.None);
+        Assert.Equal("Updated", updatedAuthor.FirstName);
+    }
 }

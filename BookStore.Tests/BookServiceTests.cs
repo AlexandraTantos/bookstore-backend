@@ -92,8 +92,6 @@ namespace BookStore.Tests
            mockRepo.Verify(r => r.DeleteAsync("1", It.IsAny<CancellationToken>()), Times.Once);
         }
 
-
-
         [Fact]
         public async Task UpdateBook_ShouldUpdate_WhenBookExists()
         {
